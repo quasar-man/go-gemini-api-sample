@@ -1,5 +1,5 @@
 package entities
 
 type Response struct {
-	Message string `json:"message"`
+	Message interface{} `json:"message"`
 }
