@@ -1,9 +1,9 @@
 package usecases
 
 import (
-	"go-gemini-api-sample/entities"
+	"github.com/google/generative-ai-go/genai"
 )
 
 type IGeminiUsecase interface {
-	GetGeminiResponse(question string) (*entities.Response, error)
+	GetGeminiResponse(question string) (*genai.GenerateContentResponse, error)
 }

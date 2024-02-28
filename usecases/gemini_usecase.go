@@ -5,8 +5,6 @@ import (
 	"log"
 	"os"
 
-	"go-gemini-api-sample/entities"
-
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
 )
@@ -17,7 +15,7 @@ func NewGeminiUsecase() IGeminiUsecase {
 	return &GeminiUsecase{}
 }
 
-func (geminiUsecase *GeminiUsecase) GetGeminiResponse(question string) (*entities.Response, error) {
+func (geminiUsecase *GeminiUsecase) GetGeminiResponse(question string) (*genai.GenerateContentResponse, error) {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 
@@ -27,15 +25,11 @@ func (geminiUsecase *GeminiUsecase) GetGeminiResponse(question string) (*entitie
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-pro")
-	geminiRes, err := model.GenerateContent(ctx, genai.Text(question))
+	response, err := model.GenerateContent(ctx, genai.Text(question))
 
 	if err != nil {
 		return nil, err
 	}
 
-	response := entities.Response{
-		Message: geminiRes.Candidates[0].Content.Parts[0],
-	}
-
-	return &response, nil
+	return response, nil
 }
